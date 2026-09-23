@@ -32,13 +32,16 @@ export default function HomeScreen() {
         </Text>
       </View>
 
-      <SectionTitle title="What Smart Trip will do" subtitle="The foundation is now in place for the AI and maps integrations." />
+      <SectionTitle
+        title="What Smart Trip will do"
+        subtitle="The foundation is now in place for the AI and maps integrations."
+      />
 
       <View style={styles.featureList}>
-        {features.map(([title, description]) => (
+        {features.map(([title, description], index) => (
           <View key={title} style={styles.feature}>
             <View style={styles.number}>
-              <Text style={styles.numberText}>{features.indexOf([title, description]) + 1}</Text>
+              <Text style={styles.numberText}>{index + 1}</Text>
             </View>
             <View style={styles.featureCopy}>
               <Text style={styles.featureTitle}>{title}</Text>
