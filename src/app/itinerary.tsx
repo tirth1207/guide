@@ -1,7 +1,7 @@
 import { useLocalSearchParams, router } from 'expo-router';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 
-import { AppButton } from '@/components/ui/app-button';
+import { AppButton } from '@/components/ui/app-button';\nimport type { GeneratedTrip } from '@/types/trip';
 
 const SAMPLE_DAYS = [
   {
@@ -43,31 +43,42 @@ export default function ItineraryScreen() {
       </View>
 
       <View style={styles.aiCard}>
-        <Text style={styles.aiLabel}>AI PLANNER</Text>
-        <Text style={styles.aiTitle}>Your itinerary engine is ready.</Text>
+        <Text style={styles.aiLabel}>{generated ? 'SMART TRIP AI' : 'DEMO ITINERARY'}</Text>
+        <Text style={styles.aiTitle}>{generated?.title ?? 'Your itinerary is ready.'}</Text>
         <Text style={styles.aiText}>
-          This screen currently uses demo data. The next integration will replace these activities
-          with structured Gemini output and verify each place through Google Places.
+          {generated?.summary ?? 'A starter itinerary is shown while the trip-generation service is not configured.'}
         </Text>
       </View>
 
-      {SAMPLE_DAYS.map((day) => (
+      {(days.length ? days : SAMPLE_DAYS.map((day) => ({
+        day: day.day,
+        date: `Day ${day.day}`,
+        activities: day.activities.map((activity, index) => ({
+          id: `${day.day}-${index}`,
+          name: activity,
+          description: '',
+          location: destination,
+          startTime: index === 0 ? '09:00' : index === 1 ? '13:00' : '18:00',
+          durationMinutes: 120,
+        })),
+      }))).map((day) => (
         <View key={day.day} style={styles.dayCard}>
           <View>
             <Text style={styles.dayLabel}>DAY {day.day}</Text>
-            <Text style={styles.dayTitle}>{day.title}</Text>
+            <Text style={styles.dayTitle}>{day.date}</Text>
           </View>
-          {day.activities.map((activity, index) => (
-            <View key={activity} style={styles.activity}>
+          {day.activities.map((activity) => (
+            <View key={activity.id} style={styles.activity}>
               <View style={styles.dot} />
               <View style={styles.activityCopy}>
-                <Text style={styles.time}>{index === 0 ? '09:00' : index === 1 ? '13:00' : '18:00'}</Text>
-                <Text style={styles.activityText}>{activity}</Text>
+                <Text style={styles.time}>{activity.startTime}</Text>
+                <Text style={styles.activityText}>{activity.name}</Text>
+                {activity.description ? <Text style={styles.description}>{activity.description}</Text> : null}
               </View>
             </View>
           ))}
         </View>
-      ))}
+      )))
 
       <AppButton label="Open trip map" variant="secondary" onPress={() => router.push('/map')} />
     </ScrollView>
@@ -91,5 +102,5 @@ const styles = StyleSheet.create({
   dot: { width: 9, height: 9, borderRadius: 5, backgroundColor: '#111', marginTop: 6 },
   activityCopy: { flex: 1, gap: 2 },
   time: { fontSize: 12, fontWeight: '700', color: '#777' },
-  activityText: { fontSize: 15, lineHeight: 21, color: '#222' },
+  activityText: { fontSize: 15, lineHeight: 21, color: '#222', fontWeight: '600' },\n  description: { fontSize: 13, lineHeight: 19, color: '#777' },
 });
