@@ -1,6 +1,6 @@
 import type { GeneratedTrip, TripPreferences } from '@/types/trip';
 
-const API_URL = process.env.EXPO_PUBLIC_API_URL;
+const API_URL = process.env.EXPO_PUBLIC_TRIP_API_URL || process.env.EXPO_PUBLIC_API_URL;
 
 function createDemoTrip(preferences: TripPreferences): GeneratedTrip {
   const interests = preferences.interests.join(', ');
@@ -114,7 +114,8 @@ export async function generateTrip(preferences: TripPreferences): Promise<Genera
     return createDemoTrip(preferences);
   }
 
-  const response = await fetch(`${API_URL.replace(/\\/$/, '')}/api/trips/generate`, {
+  const endpoint = API_URL.replace(/\\/$/, '');
+  const response = await fetch(endpoint, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(preferences),
