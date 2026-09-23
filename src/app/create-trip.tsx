@@ -6,6 +6,7 @@ import { AppButton } from '@/components/ui/app-button';
 import { Chip } from '@/components/ui/chip';
 import { SectionTitle } from '@/components/ui/section-title';
 import { BUDGETS, DEFAULT_TRIP, INTERESTS } from '@/constants/trip';
+import { generateTrip } from '@/services/gemini';
 import type { TripPreferences } from '@/types/trip';
 
 export default function CreateTripScreen() {
@@ -120,5 +121,5 @@ const styles = StyleSheet.create({
   count: { fontSize: 22, fontWeight: '700', minWidth: 28, textAlign: 'center' },
   chips: { flexDirection: 'row', flexWrap: 'wrap', gap: 10 },
   actions: { marginTop: 10, gap: 10 },
-  note: { textAlign: 'center', color: '#777', fontSize: 12 },
+  note: { textAlign: 'center', color: '#777', fontSize: 12 },\n  error: { textAlign: 'center', color: '#B42318', fontSize: 13, lineHeight: 19 },
 });
